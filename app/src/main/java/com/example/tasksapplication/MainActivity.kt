@@ -9,6 +9,8 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import com.example.tasksapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -29,8 +31,37 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+            val popupTitulo = AlertDialog.Builder(this)
+            val textTitulo = EditText(this)
+
+            popupTitulo.setTitle("Título")
+            popupTitulo.setView(textTitulo)
+            popupTitulo.setPositiveButton("Ok") { _, _ ->
+                val titulo = textTitulo.text.toString()
+
+                val popupDescricao = AlertDialog.Builder(this)
+                val textDescricao = EditText(this)
+
+                popupDescricao.setTitle("Descrição")
+                popupDescricao.setView(textDescricao)
+                popupDescricao.setPositiveButton("Ok") { _, _ ->
+                    val descricao = textDescricao.text.toString()
+
+                    val task = Task(titulo, descricao)
+
+                    Snackbar.make(view, task.toString(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show()
+                }
+                popupDescricao.setNegativeButton("Cancelar") { dialog, _ ->
+                    dialog.cancel()
+                }
+                popupDescricao.show()
+            }
+            popupTitulo.setNegativeButton("Cancelar") { dialog, _ ->
+                dialog.cancel()
+            }
+            popupTitulo.show()
         }
     }
 
